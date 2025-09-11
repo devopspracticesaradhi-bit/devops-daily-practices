@@ -21,7 +21,26 @@ Kubernetes follows a **master-worker architecture**. The **control plane** manag
 
 ## Diagram
 
-![alt text](image.png)
+        +--------------------+
+        |   Control Plane    |
+        |--------------------|
+        | API Server         |
+        | etcd               |
+        | Scheduler          |
+        | Controller Manager |
+        +--------------------+
+                 |
+     -----------------------------
+     |            |             |
++----------+ +----------+ +----------+
+| Worker 1 | | Worker 2 | | Worker 3 |
+|----------| |----------| |----------|
+| Kubelet  | | Kubelet  | | Kubelet  |
+| Kube-Proxy| | Kube-Proxy| | Kube-Proxy|
+| Containers| | Containers| | Containers|
++----------+ +----------+ +----------+
+
+
 
 ---
 
