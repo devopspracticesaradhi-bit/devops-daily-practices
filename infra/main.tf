@@ -1,5 +1,5 @@
 module "network" {
-  source = "./modules/vpc"
+  source = "../modules/vpc"
 
   name_prefix = var.project_name
   aws_region  = var.aws_region
@@ -11,7 +11,7 @@ module "network" {
 }
 
 module "k8s" {
-  source = "./modules/eks"
+  source = "../modules/eks"
 
   cluster_name    = "${var.project_name}-cluster"
   cluster_version = "1.30"
