@@ -1,0 +1,68 @@
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+method=GET path=/healthz status=200 latency_ms=40
+INFO:     10.0.12.5:52510 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=4
+INFO:     10.0.12.5:52520 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=9
+INFO:     10.0.12.5:59224 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=8
+INFO:     10.0.12.5:33176 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=17
+INFO:     10.0.12.5:33182 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:44434 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:44436 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=1
+INFO:     10.0.12.5:50110 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=4
+INFO:     10.0.12.5:38568 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=11
+INFO:     10.0.12.5:38566 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=3
+INFO:     10.0.12.5:55092 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=16
+INFO:     10.0.12.5:55100 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=4
+INFO:     10.0.12.5:44644 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=3
+INFO:     10.0.12.5:53314 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=3
+INFO:     10.0.12.5:53312 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:37080 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:37084 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=1
+INFO:     10.0.12.5:43048 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=7
+INFO:     10.0.12.5:54402 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=8
+INFO:     10.0.12.5:54400 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=48
+INFO:     127.0.0.1:35478 - "GET /healthz HTTP/1.1" 200 OK
+method=POST path=/orders status=200 latency_ms=104
+INFO:     127.0.0.1:35488 - "POST /orders HTTP/1.1" 200 OK
+method=GET path=/orders/count status=200 latency_ms=71
+INFO:     127.0.0.1:35496 - "GET /orders/count HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:55646 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=12
+INFO:     10.0.12.5:55656 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=2
+INFO:     10.0.12.5:58200 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=6
+INFO:     10.0.12.5:55610 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=7
+INFO:     10.0.12.5:55612 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.0.12.5:52478 - "GET /healthz HTTP/1.1" 200 OK
+method=GET path=/healthz status=200 latency_ms=1
+method=GET path=/healthz status=200 latency_ms=1
+INFO:     127.0.0.1:51302 - "GET /healthz HTTP/1.1" 200 OK
+method=POST path=/orders status=200 latency_ms=2
+INFO:     127.0.0.1:51316 - "POST /orders HTTP/1.1" 200 OK
+method=GET path=/orders/count status=200 latency_ms=2
+INFO:     127.0.0.1:51322 - "GET /orders/count HTTP/1.1" 200 OK
