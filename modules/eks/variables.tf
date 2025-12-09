@@ -42,3 +42,13 @@ variable "node_desired_size" {
   type        = number
   description = "Desired nodes"
 }
+
+variable "aws_auth_roles" {
+  description = "IAM roles mapped into aws-auth configmap"
+  type        = list(object({
+    rolearn  = string
+    username = string
+    groups   = list(string)
+  }))
+  default = []
+}
