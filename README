@@ -1,0 +1,257 @@
+Kubernetes + Helm + Terraform – MongoDB Demo Platform
+
+✅ Objective
+
+This project demonstrates a production-style Kubernetes platform built using:
+
+Terraform for AWS infrastructure
+
+Helm for MongoDB and application deployment
+
+EKS (Kubernetes) as the runtime
+
+A tiny demo application that reads/writes data to MongoDB
+
+The focus of this project is on:
+
+Infrastructure as Code (IaC)
+
+Helm chart authoring
+
+Secure configuration using Secrets
+
+Production-ready defaults
+
+Clear, repeatable verification steps
+
+🧱 Architecture Overview
+
+Terraform provisions:
+
+VPC with public & private subnets
+
+Internet Gateway, NAT Gateway
+
+EKS Cluster
+
+Managed Node Group
+
+IAM roles and policies
+
+On Kubernetes:
+
+MongoDB deployed using Bitnami Helm chart
+
+Demo application deployed using custom Helm chart
+
+Persistent storage via EBS CSI Driver
+
+Secrets for secure credentials
+
+Health probes and resource limits enabled
+
+Flow:
+
+User → orders-app (Service) → MongoDB (Service) → EBS PVC
+
+⚙️ Tech Stack
+Layer	Tool
+Cloud	AWS
+IaC	Terraform
+Container Runtime	Docker
+Orchestration	Kubernetes (EKS)
+Package Manager	Helm
+Database	MongoDB Community
+Application	Python + FastAPI
+Registry	AWS ECR
+🏗️ Infrastructure Provisioning (Terraform)
+Steps
+cd infra
+terraform init
+terraform plan
+terraform apply
+
+
+Terraform creates:
+
+VPC + networking
+
+EKS cluster
+
+Managed node group
+
+Cluster Access
+
+Since this was executed from an EC2 instance using Session Manager, cluster access was granted using:
+
+EKS Access Entries with AmazonEKSClusterAdminPolicy
+
+This replaces the older aws-auth ConfigMap and is the modern AWS-recommended approach.
+
+💾 MongoDB Deployment (Helm)
+Helm Chart Used
+
+Bitnami MongoDB Helm chart
+
+Reason: Well-maintained, supports auth, PVC, probes, and production features
+
+Values File: values.dev.yaml
+
+Key features:
+
+Authentication enabled
+
+Persistent storage with gp2 StorageClass
+
+ClusterIP Service
+
+Resource requests and limits defined
+
+Deployment Command
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+helm upgrade --install mongo bitnami/mongodb \
+  -n mongo \
+  -f values.dev.yaml
+
+Verification
+kubectl get pods -n mongo
+kubectl get pvc -n mongo
+kubectl get svc -n mongo
+
+
+✅ PVC → Bound
+✅ Pod → Running
+
+🧪 Demo Application (Custom Helm Chart)
+Application Features
+
+GET /healthz → Mongo ping health check
+
+POST /orders → Inserts {orderId, ts} into Mongo
+
+GET /orders/count → Returns document count
+
+Structured single-line logs
+
+Environment-based configuration
+
+Environment Variables
+Variable	Source
+MONGO_URI	Kubernetes Secret
+MONGO_DB	Helm values
+MONGO_COLLECTION	Helm values
+🐳 Docker & ECR
+Build Image
+docker build -t orders-app:v1 .
+
+Push to ECR
+aws ecr get-login-password --region us-east-1 \
+  | sudo docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+
+sudo docker tag orders-app:v1 <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/orders-app:v1
+sudo docker push <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/orders-app:v1
+
+🚀 App Deployment (Helm)
+cd helm
+helm upgrade --install orders-app ./orders-app -n mongo
+
+
+Verification:
+
+kubectl get pods -n mongo
+kubectl get svc -n mongo
+
+✅ Functional Testing (Acceptance Criteria)
+    Port Forward
+    kubectl port-forward svc/orders-app -n mongo 8080:80
+
+    Test Endpoints
+    curl http://localhost:8080/healthz
+
+    curl -X POST http://localhost:8080/orders \
+    -H "Content-Type: application/json" \
+    -d '{"orderId":"order-123"}'
+
+    curl http://localhost:8080/orders/count
+
+    Logs
+    kubectl logs deploy/orders-app -n mongo
+
+
+    Example:
+
+    method=POST path=/orders status=200 latency_ms=12
+    method=GET path=/orders/count status=200 latency_ms=4
+
+
+✅ All acceptance criteria satisfied.
+
+🛠️ Major Issues Faced & How They Were Fixed
+1️⃣ kubectl get nodes → Unauthorized
+
+ Cause: No cluster access mapped to EC2 IAM role
+ Fix: Used EKS Access Entry + AmazonEKSClusterAdminPolicy
+
+2️⃣ MongoDB Pod Stuck in Pending
+
+ Cause:
+ EBS CSI Driver not installed
+
+ Fix:
+ Installed Amazon EBS CSI Driver
+ Installed EKS Pod Identity Agent
+ Associated AmazonEBSCSIDriverPolicy to CSI Controller ServiceAccount
+ Reinstalled MongoDB
+
+3️⃣ EBS CSI Controller CrashLoopBackOff
+
+ Cause: Missing IAM role for controller
+ Fix: Created IAM role using Pod Identity and reattached policy
+
+4️⃣ Helm Install Failing due to values.yaml YAML Errors
+
+ Cause: Broken indentation
+ Fix: Replaced entire values.yaml with a clean validated version
+
+5️⃣ App Pod in ImagePullBackOff
+
+ Cause: Image tag v1 did not exist in ECR
+ Fix: Properly built, tagged, logged into ECR, and pushed image
+
+6️⃣ no basic auth credentials During Docker Push
+
+ Cause: ECR login was done as normal user but push was with sudo
+ Fix: Logged into ECR again using:
+ aws ecr get-login-password | sudo docker login ...
+
+7️⃣ Python Virtual Environment Permission Issues
+
+ Cause: Project folder created using sudo
+ Fix:
+ sudo chown -R ssm-user:ssm-user ~/devops-daily-practices
+ Recreated venv and reinstalled dependencies successfully.
+
+🔐 Security Highlights
+
+ No secrets hardcoded in Git
+ MongoDB password stored in Kubernetes Secret
+ IAM access managed using EKS Access Entries
+ EBS access secured using Pod Identity
+ Application runs using least-privilege model
+
+📈 Optional Tier-B Extensions (Not Implemented Yet)
+
+ NetworkPolicy between app and MongoDB
+ HPA for autoscaling based on CPU
+ Metrics scraping using Prometheus
+ Ingress exposure with TLS
+
+🏁 Conclusion
+
+ This project demonstrates:
+ Real-world Kubernetes troubleshooting
+ Secure AWS + EKS integration
+ Production-style Helm deployments
+ End-to-end app + database connectivity
