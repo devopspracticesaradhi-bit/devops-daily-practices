@@ -20,7 +20,7 @@ module "k8s" {
   subnet_ids = module.network.private_subnet_ids
 
   node_group_name   = "${var.project_name}-ng"
-  node_instance_type = "t3.medium"
+  node_instance_type = "t3.small"
   node_min_size      = 2
   node_max_size      = 4
   node_desired_size  = 2
