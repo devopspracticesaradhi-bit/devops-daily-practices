@@ -7,7 +7,7 @@ resource "aws_instance" "my-test" {
   ami = var.ami
   instance_type = var.instance_type
   tags = {
-    name = "my-ec2-terraform-instance-${count.index}"
+    Name = "my-ec2-terraform-instance-${count.index}"
     env = "Test"
   }
 }
