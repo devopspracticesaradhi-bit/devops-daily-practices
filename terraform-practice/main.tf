@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 resource "aws_instance" "my-test" {
   count = 3
-  ami = "ami-068c0051b15cdb816"
-  instance_type = "t3.micro"
+  ami = var.region
+  instance_type = var.instance_type
   tags = {
     name = "my-ec2-terraform-instance-${count.index}"
     env = "Test"
