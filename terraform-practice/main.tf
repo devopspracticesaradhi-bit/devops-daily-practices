@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_instance" "my-test" {
   count = 3
-  ami = var.region
+  ami = var.ami
   instance_type = var.instance_type
   tags = {
     name = "my-ec2-terraform-instance-${count.index}"
