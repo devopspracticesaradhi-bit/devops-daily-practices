@@ -3,12 +3,12 @@ provider "aws" {
 }
 
 resource "aws_instance" "my-test" {
+  count = 3
   ami = "ami-068c0051b15cdb816"
   instance_type = "t3.micro"
   tags = {
-    name = "my-ec2-terraform-instance"
+    name = "my-ec2-terraform-instance-${count.index}"
     env = "Test"
-    
   }
 }
 
