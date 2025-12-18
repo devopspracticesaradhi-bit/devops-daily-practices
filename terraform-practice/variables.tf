@@ -16,3 +16,9 @@ variable "instance_type" {
   default = "t3.micro"
 }
 
+variable "ami" {
+    description = "The default AMI ID"
+    type = string
+    default = "ami-068c0051b15cdb816"
+}
+
