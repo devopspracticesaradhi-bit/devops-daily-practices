@@ -3,12 +3,11 @@ provider "aws" {
 }
 
 resource "aws_instance" "my-test" {
-  count = 3
-  ami = var.ami
+  for_each = var.tags
+  ami           = var.ami
   instance_type = var.instance_type
   tags = {
-    Name = "my-ec2-terraform-instance-${count.index}"
-    env = "Test"
+    Name = "my-ec2-terraform-instance-${each.key}"
+    env  = var.environment
   }
 }
-

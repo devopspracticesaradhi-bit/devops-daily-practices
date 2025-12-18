@@ -11,14 +11,22 @@ variable "environment" {
 }
 
 variable "instance_type" {
-  description = "The type of AWS EC2 instance to create"
-  type = string
-  default = "t3.micro"
+    description = "The instance type for the EC2 instance"
+    type        = string
+    default     = "t3.micro"
 }
 
 variable "ami" {
-    description = "The default AMI ID"
-    type = string
-    default = "ami-068c0051b15cdb816"
+    description = "The AMI ID for the EC2 instance"
+    type        = string
+    default     = "ami-068c0051b15cdb816"
 }
 
+variable "tags" {
+    description = "The tags for the ec2 machines"
+    type        = map(string)
+    default     = {
+        "PROD" = "Instance-1"
+        "QA"   = "Instance-2"
+    }
+}
