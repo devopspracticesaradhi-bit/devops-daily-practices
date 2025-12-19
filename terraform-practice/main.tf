@@ -33,11 +33,9 @@ data "aws_subnet_ids" "default" {
 resource "aws_instance" "demo" {
   ami           = data.aws_ami.name.id
   instance_type = var.instance_type
+  subnet_id     = data.aws_subnets.default.ids[0]
 
-  tags = merge(
-    {
-      Name = var.instance_name
-    },
-    var.tags
-  )
+  tags = {
+    Name = "${var.environment}-${var.instance_name}"
+  }
 }
