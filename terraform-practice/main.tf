@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 # Fetch latest Amazon Linux 2 AMI
 data "aws_ami" "latest" {
   most_recent = true
