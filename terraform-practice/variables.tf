@@ -20,6 +20,11 @@ variable "ami_id" {
   type        = string
 }
 
+variable "environment" {
+  description = "Please declare your ENV"
+  type = string
+}
+
 variable "tags" {
   description = "Tags to apply"
   type        = map(string)
