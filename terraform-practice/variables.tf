@@ -4,29 +4,27 @@ variable "region" {
     default     = "us-east-1"
 }
 
-variable "environment" {
-    description = "The environment for deployment (e.g., dev, staging, prod)"
-    type        = string
-    default     = "dev"
+variable "instance_name" {
+  description = "Name of the EC2 instance"
+  type        = string
 }
 
 variable "instance_type" {
-    description = "The instance type for the EC2 instance"
-    type        = string
-    default     = "t3.micro"
+  description = "EC2 type"
+  type        = string
+  default     = "t2.micro"
 }
 
-variable "ami" {
-    description = "The AMI ID for the EC2 instance"
-    type        = string
-    default     = "ami-068c0051b15cdb816"
+variable "ami_id" {
+  description = "AMI ID for EC2"
+  type        = string
 }
 
 variable "tags" {
-    description = "The tags for the ec2 machines"
-    type        = map(string)
-    default     = {
-        "PROD" = "Instance-1"
-        "QA"   = "Instance-2"
-    }
+  description = "Tags to apply"
+  type        = map(string)
+  default     = {
+    Environment = "dev"
+    Owner       = "Saradhi"
+  }
 }

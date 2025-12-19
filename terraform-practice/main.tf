@@ -1,13 +1,15 @@
 provider "aws" {
-  region = var.region
+  region = "ap-south-1"
 }
 
-resource "aws_instance" "my-test" {
-  for_each = var.tags
-  ami           = var.ami
+resource "aws_instance" "demo" {
+  ami           = var.ami_id
   instance_type = var.instance_type
-  tags = {
-    Name = "my-ec2-terraform-instance-${each.key}"
-    env  = var.environment
-  }
+
+  tags = merge(
+    {
+      Name = var.instance_name
+    },
+    var.tags
+  )
 }
