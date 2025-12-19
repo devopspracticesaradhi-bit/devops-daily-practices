@@ -15,11 +15,6 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "ami_id" {
-  description = "AMI ID for EC2"
-  type        = string
-}
-
 variable "environment" {
   description = "Please declare your ENV"
   type = string
