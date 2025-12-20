@@ -45,7 +45,7 @@ resource "aws_instance" "demo" {
 
 # use the user-data file
   user_data = file("user-data.sh")
-  key_name = aws_key_pair.saradhi
+  key_name = aws_key_pair.saradhi.key_name
 
   tags = {
     Name = "${var.environment}-${var.instance_name}"
