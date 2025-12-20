@@ -20,6 +20,16 @@ variable "environment" {
   type = string
 }
 
+variable "key_name" {
+  description = "Enter your key"
+  type = string
+}
+
+variable "private_key_path" {
+  description = "Enter your path"
+  type = string
+}
+
 variable "tags" {
   description = "Tags to apply"
   type        = map(string)

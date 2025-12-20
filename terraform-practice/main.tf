@@ -33,7 +33,41 @@ resource "aws_instance" "demo" {
   instance_type = var.instance_type
   subnet_id     = data.aws_subnets.default.ids[0]
 
+# use the user-data file
+  user_data = file("user-data.sh")
+  key_name = var.key_name
+
   tags = {
     Name = "${var.environment}-${var.instance_name}"
   }
 }
+
+resource "null_resource" "remote_setup" {
+  depends_on = [ aws_instance.demo ]
+
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = aws_instance.demo.public_ip
+    }
+
+    inline = [
+      "sudo systemctl enable httpd",
+      "sudo systemctl restart httpd",
+      "echo 'Provisioned by remote-exec' | sudo tee /var/www/html/info.txt"
+    ] 
+    
+  }
+  
+}
+
+# Run local-exec on your machine
+resource "null_resource" "local_message" {
+  depends_on = [null_resource.remote_setup]
+
+  provisioner "local-exec" {
+    command = "echo Web server deployed at ${aws_instance.web.public_ip}"
+}
+
