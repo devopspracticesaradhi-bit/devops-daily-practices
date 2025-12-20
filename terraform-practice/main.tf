@@ -80,7 +80,7 @@ resource "null_resource" "local_message" {
   depends_on = [null_resource.remote_setup]
 
   provisioner "local-exec" {
-    command = "echo Web server deployed at ${aws_instance.web.public_ip}"
+    command = "echo Web server deployed at ${aws_instance.demo.public_ip}"
 }
 
 }
