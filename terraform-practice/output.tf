@@ -15,6 +15,6 @@ output "subnet_ids" {
 }
 
 output "private_key_pem" {
-  value     = tls_private_key.generated.private_key_pem
+  value     = tls_private_key.saradhi.private_key_pem
   sensitive = true
 }
