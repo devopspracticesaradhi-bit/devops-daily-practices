@@ -13,3 +13,8 @@ output "vpc_id" {
 output "subnet_ids" {
   value = data.aws_subnets.default.ids
 }
+
+output "private_key_pem" {
+  value     = tls_private_key.generated.private_key_pem
+  sensitive = true
+}

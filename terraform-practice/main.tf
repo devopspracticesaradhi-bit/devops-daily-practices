@@ -27,6 +27,16 @@ data "aws_subnets" "default" {
   }
 }
 
+resource "tls_private_key" "saradhi" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "saradhi" {
+   key_name   = "terraform-generated-key"
+  public_key = tls_private_key.saradhi.public_key_openssh
+}
+
 # Create EC2 instance
 resource "aws_instance" "demo" {
   ami           = data.aws_ami.latest.id
@@ -35,12 +45,14 @@ resource "aws_instance" "demo" {
 
 # use the user-data file
   user_data = file("user-data.sh")
-  key_name = var.key_name
+  key_name = aws_key_pair.saradhi
 
   tags = {
     Name = "${var.environment}-${var.instance_name}"
   }
 }
+
+
 
 resource "null_resource" "remote_setup" {
   depends_on = [ aws_instance.demo ]
@@ -49,7 +61,7 @@ resource "null_resource" "remote_setup" {
     connection {
       type = "ssh"
       user = "ec2-user"
-      private_key = file(var.private_key_path)
+      private_key = aws_key_pair.saradhi
       host        = aws_instance.demo.public_ip
     }
 
