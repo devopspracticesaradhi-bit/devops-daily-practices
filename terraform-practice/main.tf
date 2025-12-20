@@ -61,7 +61,7 @@ resource "null_resource" "remote_setup" {
     connection {
       type = "ssh"
       user = "ec2-user"
-      private_key = aws_key_pair.saradhi.key_pair_id
+      private_key = tls_private_key.saradhi.private_key_pem
       host        = aws_instance.demo.public_ip
     }
 
