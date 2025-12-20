@@ -71,3 +71,5 @@ resource "null_resource" "local_message" {
     command = "echo Web server deployed at ${aws_instance.web.public_ip}"
 }
 
+}
+
