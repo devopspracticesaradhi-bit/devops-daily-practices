@@ -1,23 +1,7 @@
-data "aws_ami" "latest" {
-  most_recent = true
-
-  owners = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
-    filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-  
-}
-}
-
-resource "aws_instance" "saradhi-test" {
-  ami = data.aws_ami.latest.id
+resource "aws_instance" "this" {
+  ami           = "ami-068c0051b15cdb816" # Replace with a valid AMI ID for your region
   instance_type = var.instance_type
-  tags = {
-    Name = "${var.environment}-${var.instance_name}"
-  }
+  subnet_id     = var.subnet_id
+
+  tags = var.tags
 }
