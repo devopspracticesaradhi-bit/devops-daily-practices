@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "../vpc-module"
+  source = "vpc-module"
 
   vpc_cidr = "10.0.0.0/16"
   public_subnet_cidrs  = ["10.0.1.0/24"]
@@ -15,7 +15,7 @@ module "vpc" {
 }
 
 module "ec2" {
-  source = "../ec2-module"
+  source = "ec2-module"
 
   vpc_id          = module.vpc.vpc_id
   public_subnet   = module.vpc.public_subnet_ids[0]
