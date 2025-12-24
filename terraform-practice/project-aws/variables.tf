@@ -3,3 +3,9 @@ variable "environment" {
   type = string
   default = "DEV"
 }
+
+variable "region"{
+    description = "Please enter your region"
+    type = string
+    default = "us-east-1"
+}
