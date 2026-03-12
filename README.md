@@ -53,7 +53,7 @@ Producer Lambda → SQS Queue → Consumer Lambda → S3 Storage
 Producer sends a success event → Consumer processes message → Data stored in S3.
 
 ### Failure Simulation
-Producer sends an error event → Consumer Lambda fails → CloudWatch detects error → Alarm triggers → SNS sends notification.
+Producer sends an error event → Consumer Lambda fails → CloudWatch detects error → Alarm triggers → SNS sends notifications.
 
 ---
 
