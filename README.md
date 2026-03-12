@@ -1,32 +1,76 @@
-# Kubernetes Architecture
+# Serverless SRE Monitoring Lab (AWS)
 
-Kubernetes follows a **master-worker architecture**. The **control plane** manages the cluster, and the **worker nodes** run the workloads.
+## Project Overview
 
----
+This project demonstrates a **Serverless SRE monitoring architecture on AWS**.  
+It simulates a production event-processing pipeline where application logs are generated, processed, stored, and monitored for failures.
 
-## Control Plane Components
-- **API Server**: The entry point for all Kubernetes commands (`kubectl` / REST).
-- **etcd**: Key-value store that stores the cluster state and configuration.
-- **Controller Manager**: Ensures the desired state matches the actual state (e.g., replicas, node health).
-- **Scheduler**: Assigns Pods to Nodes based on resources, affinity, and constraints.
+The system uses **Lambda, SQS, S3, CloudWatch, and SNS** to implement an **event-driven architecture with observability and alerting**.
 
 ---
 
-## Worker Node Components
-- **Kubelet**: Agent on each node; communicates with the API server and manages pods/containers.
-- **Kube-Proxy**: Manages networking and load-balancing between pods and services.
-- **Container Runtime**: Runs containers (e.g., containerd, CRI-O, Docker).
+## Architecture
+
+Producer Lambda → SQS Queue → Consumer Lambda → S3 Storage  
+                                    ↓  
+                               CloudWatch Logs  
+                                    ↓  
+                               CloudWatch Alarm  
+                                    ↓  
+                                    SNS  
 
 ---
 
-## Diagram
+## AWS Services Used
 
-Please refer Attached Image outside.
-
+| Service | Purpose |
+|------|------|
+| AWS Lambda | Serverless compute for log generation and processing |
+| Amazon SQS | Message queue for decoupling services |
+| Amazon S3 | Storage for processed log events |
+| Amazon CloudWatch | Monitoring, logs, metrics, alarms |
+| Amazon SNS | Email notifications for incidents |
+| IAM | Secure role-based access for services |
 
 ---
 
-## Key Points
-- The control plane ensures **desired state** is always maintained.
-- Worker nodes actually **run the workloads**.
-- Communication happens via **API server**.
+## Workflow
+
+1. Producer Lambda generates application events.
+2. Events are pushed into an **SQS queue**.
+3. Consumer Lambda is automatically triggered by SQS.
+4. Consumer processes the message.
+5. Successful events are stored in **Amazon S3**.
+6. Errors generate **Lambda failures**.
+7. **CloudWatch monitors metrics and logs**.
+8. **CloudWatch alarms trigger SNS alerts**.
+
+---
+
+## Testing Scenarios
+
+### Normal Flow
+Producer sends a success event → Consumer processes message → Data stored in S3.
+
+### Failure Simulation
+Producer sends an error event → Consumer Lambda fails → CloudWatch detects error → Alarm triggers → SNS sends notification.
+
+---
+
+## Observability
+
+CloudWatch monitors key metrics:
+
+- Lambda Invocations
+- Lambda Errors
+- Lambda Duration
+- SQS Queue Depth
+- SQS Messages in Flight
+
+CloudWatch dashboards visualize system health.
+
+---
+
+## Incident Simulation
+
+The consumer Lambda intentionally throws an exception when:
